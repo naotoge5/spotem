@@ -1,6 +1,7 @@
 html {
-    overflow:hidden;
+    overflow: hidden;
 }
+
 body {
     width: 100%;
     background-image: url(../img/background.png);
@@ -9,7 +10,33 @@ body {
     font-family: 'Academy Engraved LET', sans-serif;
     font-size: 30%;
 }
-div {
-    
-    
+
+#logo {
+    position: absolute;
+    top: 24%;
+    left: 10%;
 }
+
+.button {
+    display       : inline-block;
+    border-radius : 50px;
+    font-size     : 14pt;
+    cursor: pointer;
+    text-align    : center;
+    padding       : 12px 144px;
+    margin: 18px;
+    background    : #565756;
+    color         : #FFB44D;
+    transition    : .2s;
+    box-shadow    : 4px 4px 10px #666666;
+    border        : 2px solid #FFB44D;
+  }
+  .button:active {
+    box-shadow    : none;        /* カーソル時の影消去 */
+  }
+
+  .toForm {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+  }
