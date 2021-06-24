@@ -1,42 +1,40 @@
-html {
-    overflow: hidden;
+.ori-font {
+  font-family: "AcademyEngravedLetPlain, Academy Engraved LET";
+  /*font-family: 'Academy Engraved LET', sans-serif;*/
 }
 
-body {
-    width: 100%;
-    background-image: url(../img/background.png);
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: 'Academy Engraved LET', sans-serif;
-    font-size: 30%;
+#top .hero-body {
+  background-image: url('../img/background.png');
+  background-size: cover;
 }
 
-#logo {
-    position: absolute;
-    top: 24%;
-    left: 10%;
+#top .title {
+  font-size: 6em;
 }
 
-.button {
-    display       : inline-block;
-    border-radius : 50px;
-    font-size     : 14pt;
-    cursor: pointer;
-    text-align    : center;
-    padding       : 12px 144px;
-    margin: 18px;
-    background    : #565756;
-    color         : #FFB44D;
-    transition    : .2s;
-    box-shadow    : 4px 4px 10px #666666;
-    border        : 2px solid #FFB44D;
-  }
-  .button:active {
-    box-shadow    : none;        /* カーソル時の影消去 */
-  }
+#top .subtitle {
+  font-size: 2em;
+}
 
-  .toForm {
-    position: absolute;
-    top: 50%;
-    right: 10%;
+#top .footer {
+  background-color: #fafafa;
+  padding: 1.0rem;
+}
+
+@media screen and (max-width:768px) {
+  #top .title {
+    font-size: 4em;
   }
+  #top .subtitle {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width:375px) {
+  #top .title {
+    font-size: 3em;
+  }
+  #top .subtitle {
+    font-size: 1.5em;
+  }
+}
