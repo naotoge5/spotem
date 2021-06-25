@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>home.php(timeline)
+    <h1>home.php(timeline)</h1>
+    <a href="index.html">index</a>
 </body>
 </html>
