@@ -1,0 +1,14 @@
+{
+    "name": "spotem",
+    "short_name": "spotem",
+    "description": "spotem",
+    "start_url": "home.php",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "assets/img/spotem.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ]
+}

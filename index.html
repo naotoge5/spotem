@@ -5,23 +5,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Spotem</title>
+    <link rel="stylesheet" href="assets/css/bulma.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/img/spotem.png" sizes="192x192">
 </head>
 
 <body>
-    <svg xmlns="http://www.w3.org/2000/svg"  id="logo" width="601" height="227" viewBox="0 0 601 227">
-        <text transform="translate(0 131)" font-size="192"
-            font-family="AcademyEngravedLetPlain, Academy Engraved LET">
-            <tspan x="0" y="0">Spotem</tspan>
-        </text>
-    </svg>
-
-    <div class="toForm">
-        <button class="button">ログイン</button><br>
-        <button class="button">検索する</button>
-    </div>
-
+    <section id="top" class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered is-mobile">
+                    <div class="column is-10 is-12-mobile">
+                        <h1 class="title ori-font has-text-warning-light">
+                            Spotem
+                        </h1>
+                        <h2 class="subtitle pt-4">
+                            観光SNS
+                        </h2>
+                    </div>
+                </div>
+                <div class="is-hidden-tablet p-5"></div>
+                <div class="columns is-mobile is-centered">
+                    <div class="buttons column is-10-mobile is-5-tablet is-offset-5-tablet">
+                        <button class="button is-rounded is-warning is-fullwidth">ログイン</button>
+                        <button class="button is-rounded is-primary is-fullwidth">検索する</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="columns is-centered">
+                    <p class="is-hidden-mobile column is-10">
+                        掲載をお考えの方は<a href="/company">こちら</a>
+                    </p>
+                </div>
+                <div class="columns is-centered is-mobile">
+                    <div class="column is-10">
+                        <small class="is-pulled-right">
+                            <span class="icon">
+                                <i class="far fa-copyright"></i>
+                            </span>Kyoto-Computer-Gakuin
+                        </small>
+                    </div>
+                </div>
+            </div>
+    </section>
 </body>
 
 </html>
