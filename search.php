@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +11,10 @@
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
     <div class=""></div>
-<input class="input is-rounded" type="text" placeholder="Rounded input">
+    <input class="input is-rounded" type="text" placeholder="Rounded input">
 </body>
+
 </html>
