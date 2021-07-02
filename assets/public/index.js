@@ -20,13 +20,22 @@ $(function () {
         $('#login_form.modal').removeClass('is-active');
     });
 
-    $.ajax({
-        type: "GET",
-        url: "../",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) {
+    $('#login_form .button').click(function () {
+        var userid = $('#login_form input[name="userid"]').val();
+        var password = $('#login_form input[name="password"]').val();
+        $.ajax({
+            type: "POST",
+            url: "controller/aync.php",
+            data: { userid: userid, password: password }
+        }).done(function (data) {
+            // 通信成功時のコールバック処理
+            console.log(data);
+        }).fail(function (data) {
+            // 通信失敗時のコールバック処理
+            console.log('ds');
+        }).always(function (data) {
+            // 常に実行する処理
+        });
 
-        }
     });
 });
