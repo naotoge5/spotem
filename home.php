@@ -1,8 +1,8 @@
 <?php
-if (isset($_GET['userid'])) {
-    $userid = $_GET['userid'];
+session_start();
+if (isset($_SESSION['userid'])) {
+    $userid = $_SESSION['userid'];
     echo $userid;
-    echo $_SERVER['REQUEST_URI'];
 }
 ?>
 <!DOCTYPE html>

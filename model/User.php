@@ -3,23 +3,21 @@ require_once 'Config.php';
 
 class User
 {
-    private $id;
     private $userid;
     private $name;
-    private $password;
     private $email;
+    private $password;
     private $comment;
     private $image;
     private $is_official;
 
-    function __construct(string $userid, string $name)
+    function __construct(string $userid, string $name, string $email)
     {
         $this->userid = $userid;
         $this->name = $name;
+        $this->email = $email;
         //ather
-        $this->id = null;
         $this->password = null;
-        $this->email = null;
         $this->comment = null;
         $this->image = null;
         $this->is_official = 0;
@@ -44,6 +42,11 @@ class User
     {
         $this->image = $image;
         return $this;
+    }
+
+    function getUserId()
+    {
+        return $this->userid;
     }
 
     function getName()
@@ -72,21 +75,22 @@ class User
     function register($password)
     {
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
-        $flag = 1;
+        $flag = false;
         try {
             $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
-            $stmt = $db->prepare("INSERT INTO users VALUES(null, :userid, :name, :password, :email, :comment, :image, :is_official)");
+            $stmt = $db->prepare("INSERT INTO users VALUES(:userid, :name, :email, :password, :comment, :image, :is_official)");
             $stmt->bindParam(':userid', $this->userid);
             $stmt->bindParam(':name', $this->name);
-            $stmt->bindParam(':password', $hash_password);
             $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':password', $hash_password);
             $stmt->bindParam(':comment', $this->comment);
             $stmt->bindParam(':image', $this->image);
             $stmt->bindParam(':is_official', $this->is_official);
             $stmt->execute();
+            $flag = true;
         } catch (Exception $e) {
-            $flag = Config::errorType($e);
+            //$flag = Config::errorType($e);
         } finally {
             $db->close();
         }
@@ -98,11 +102,35 @@ class User
     }
     /**
      * Undocumented function
+     *
+     * @param string $userid userid
+     * @return bool 既存のユーザIDであれば1(true)そうでなければ0(false)
+     */
+    static function find(string $userid): bool
+    {
+        $flag = false;
+        try {
+            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
+            $db->enableExceptions(true);
+            $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :userid");
+            $stmt->bindParam(':userid', $userid);
+            $result = $stmt->execute();
+            $row = $result->fetchArray(SQLITE3_ASSOC);
+            if ($row['COUNT(userid)']) $flag = true;
+        } catch (Exception $e) {
+            $e->getMessage();
+        } finally {
+            $db->close();
+        }
+        return $flag;
+    }
+    /**
+     * Undocumented function
      * @deprecated 未実装
      *
      * @return array[user]
      */
-    static function findAll()
+    static function findAll(string $text)
     {
         $rows = [];
         try {
@@ -122,22 +150,22 @@ class User
     /**
      * Undocumented function
      *
-     * @param string|int $key id or userid
+     * @param string|int $unique userid or email
      * 
      * @return user|false
      */
-    static function get($key)
+    static function get($unique)
     {
         try {
             $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
-            $stmt = $db->prepare("SELECT * FROM users WHERE userid = :key OR id = :key");
-            $stmt->bindParam(':key', $key);
+            $stmt = $db->prepare("SELECT * FROM users WHERE userid = :key OR email = :key");
+            $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
             $row = $result->fetchArray(SQLITE3_ASSOC);
             if ($row) {
-                $user = new User($row['userid'], $row['name'], $row['password']);
-                $user->setEmail($row['email'])->setComment($row['comment'])->setImage($row['image'])->setIsOfficial($row['is_official']);
+                $user = new User($row['userid'], $row['name'], $row['email']);
+                $user->setComment($row['comment'])->setImage($row['image'])->setIsOfficial($row['is_official']);
                 $row = $user;
             }
         } catch (Exception $e) {
@@ -161,49 +189,40 @@ class User
         try {
             $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
-            $stmt = $db->prepare("select count(*) from users where userid = :userid and password = :password");
+            $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE userid = :userid AND password = :password");
             $stmt->bindParam(':userid', $usreid);
             $stmt->bindParam(':password', $password);
             $result = $stmt->execute();
-            $data = $result->fetchArray(SQLITE3_ASSOC);
+            $row = $result->fetchArray(SQLITE3_ASSOC);
         } catch (Exception $e) {
         } finally {
             $db->close();
         }
-        return $data;
+        return $row;
     }
 
     /**
      * Undocumented function
-     *
-     * @param string $usreid
-     * @param string $password
-     * @return bool 
      * 
+     * @param string $unique userid or email
+     * @param string $password password
+     * @return bool 該当のuserが存在すれば true, そうでなければfalse
      */
-    static function authSecure(string $usreid, string $password)
+    static function authSecure(string $unique, string $password): bool
     {
+        $flag = false;
         try {
             $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
-            $stmt = $db->prepare("select count(*) from users where userid = :userid and password = :password");
-            $stmt->bindParam(':userid', $usreid);
-            $stmt->bindParam(':password', $password);
+            $stmt = $db->prepare("SELECT password FROM users WHERE userid = :key OR email = :key");
+            $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
-            $data = $result->fetchArray(SQLITE3_ASSOC);
+            $row = $result->fetchArray(SQLITE3_ASSOC);
+            if (password_verify($password, $row['password'])) $flag = true;
         } catch (Exception $e) {
         } finally {
             $db->close();
         }
-        return $data;
-        /*
-        if (password_verify($_POST['password'], $row['password'])) {
-            session_regenerate_id(true); //session_idを新しく生成し、置き換える
-            $_SESSION['EMAIL'] = $row['email'];
-            echo 'ログインしました';
-        } else {
-            echo 'メールアドレス又はパスワードが間違っています。';
-            return false;
-        }*/
+        return $flag;
     }
 }
