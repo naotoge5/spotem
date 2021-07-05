@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home.php</title>
-    <link rel="stylesheet" href="assets/css/bulma.css">
-    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="assets/public/bulma.css">
+    <link rel="stylesheet" href="assets/public/home.css">
 </head>
+
+
 <body>
-    <header class="has-text-centered">ホーム</header>
-    <a href="index.html">ログイン</a>
+<header class="has-text-centered">
+<!--自分のアイコン表示-->
+<figure class="myicon">
+<img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+</figure>
+<p>ホーム</p>
 
 <div class="tabs is-large is-centered" >
 　<ul>
@@ -18,5 +24,44 @@
     <li><a>一般</a></li>
   </ul>
 </div>
+</header>
+
+<section class="=contents">
+<div class="content">
+<div class="media">
+    <figure class="media-left">
+      <p class="image is-64x64">
+        <img src="https://bulma.io/images/placeholders/128x128.png">
+      </p>
+    </figure>
+    <div class="media-content">
+      <div class="element">
+          <!--投稿ユーザー名、ユーザーアイコン、投稿日、時間、テキスト、画像、位置情報、いいね数取得-->
+          <strong class="username">Cafe・○○</strong>  <small class="date">31m</small>
+          <br>
+          <p class="text">おはようございます！</p>
+       
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-reply"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-heart"></i></span>
+          </a>
+        </div>
+      </nav>
+    </div>
+    <div class="media-right">
+      <button class="delete"></button>
+    </div>
+  </div>
+</div>
+</section>
+
 </body>
 </html>
