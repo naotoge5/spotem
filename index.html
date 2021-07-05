@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotem</title>
-    <link rel="stylesheet" href="assets/css/bulma.css">
+    <link rel="stylesheet" href="assets/public/bulma.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
-    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/public/index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="assets/public/index.js"></script>
     <link rel="manifest" href="manifest.json">
 </head>
 
@@ -18,23 +21,24 @@
             <div class="container">
                 <div class="columns is-centered is-mobile">
                     <div class="column is-10 is-12-mobile">
-                        <h1 class="title ori-font has-text-warning-light">
+                        <h1 class="title has-text-warning-light">
                             Spotem
                         </h1>
-                        <h2 class="subtitle pt-4">
+                        <h2 class="subtitle py-5">
                             観光SNS
                         </h2>
                     </div>
                 </div>
-                <div class="is-hidden-tablet p-5"></div>
                 <div class="columns is-mobile is-centered">
-                    <div class="buttons column is-10-mobile is-5-tablet is-offset-5-tablet">
-                        <button class="button is-rounded is-warning is-fullwidth">ログイン</button>
-                        <button class="button is-rounded is-primary is-fullwidth">検索する</button>
+                    <div class="buttons column is-10-mobile is-6-tablet is-offset-4-tablet">
+                        <a href="signup.php" class="button is-rounded is-success is-fullwidth mb-4">アカウント作成</a>
+                        <input type="button" name="login" class="button is-rounded is-warning is-fullwidth mb-0"
+                            value="ログイン">
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="footer">
             <div class="container">
                 <div class="columns is-centered">
