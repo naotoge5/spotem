@@ -103,17 +103,17 @@ class User
     /**
      * Undocumented function
      *
-     * @param string $userid userid
+     * @param string $unique userid or email
      * @return bool 既存のユーザIDであれば1(true)そうでなければ0(false)
      */
-    static function find(string $userid): bool
+    static function find(string $unique): bool
     {
         $flag = false;
         try {
             $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
             $db->enableExceptions(true);
-            $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :userid");
-            $stmt->bindParam(':userid', $userid);
+            $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :key OR email = :key");
+            $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
             $row = $result->fetchArray(SQLITE3_ASSOC);
             if ($row['COUNT(userid)']) $flag = true;

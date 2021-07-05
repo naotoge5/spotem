@@ -1,0 +1,32 @@
+html, body, ._is-centered {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: black;
+}
+
+input:not(input[type="button"]) {
+    background-color: transparent!important;
+}
+
+input::placeholder {
+    color: gray!important;
+}
+
+input:not(input[type="button"]) {
+    color: white !important;
+    ;
+}
+
+._is-centered {
+    margin: 30% 36px;
+}
+
+@media screen and (min-width: 769px) {
+    ._is-centered {
+        margin: 10% auto;
+        width: 600px;
+    }
+}

@@ -14,21 +14,5 @@ if (strpos($request_url, 'login')) {
         header('Location: ../login.php?unique=' . $unique);
     }
 } else {
-    /*
-    $unique = Config::getUnique($request_url);
-    if (!$unique) {
-        
-    }
-    $userid = $_POST['userid'];
-    $name = 'naotoge5（表示名）';
-    //uniqueからアドレスを引っ張り出してくる
-    $email = '10naotoge5.ykputi@gmail.com';
-    $password = $_POST['password'];
-    $user = new User($userid, $name, $email);
-    if ($user->register($password)) {
-        $_SESSION['userid'] = $userid;
-        echo 'ユーザー登録完了';
-    } else {
-        echo 'ユーザー失敗';
-    }*/
+    
 }

@@ -31,3 +31,11 @@ class Config
         return $result;
     }
 }
+
+abstract class Customer
+{
+    abstract function get();
+    function __construct(string $userid, string $name, string $email) {
+
+    }
+}
