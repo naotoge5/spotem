@@ -41,7 +41,7 @@
                         </span>
                     </div>
                 </div>
-                <input class="input button is-rounded is-success next" type="button" value="次へ" disabled>
+                <input id="toSecond" class="input button is-rounded is-success next" type="button" value="次へ" disabled>
             </div>
             <div id="second" class="is-hidden">
                 <div id="email" class="field mb-5">
@@ -67,7 +67,7 @@
                 </div>
                 <div id="password_check" class="field mb-5">
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input is-medium is-rounded" type="password" name="password_check" placeholder="確認">
+                        <input class="input is-medium is-rounded" type="password" name="password_check" oncopy="return false" placeholder="確認">
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
                         </span>
@@ -77,7 +77,23 @@
                     </div>
                     <p class="help is-danger"></p>
                 </div>
-                <input class="input button is-rounded is-success next" type="button" value="次へ" disabled>
+                <input id="toThird" class="input button is-rounded is-success next" type="button" value="次へ" disabled>
+            </div>
+            <div id="third" class="is-hidden">
+                <p class="help is-warning has-text-centered mb-5">メールアドレスに認証コードを送信しました<br>コードを入力してください</p>
+                <div id="code" class="field mb-5">
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input is-medium is-rounded" type="num" name="code" placeholder="認証コード">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-key"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas"></i>
+                        </span>
+                    </div>
+                    <p class="help is-danger"></p>
+                </div>
+                <input id="last" class="input button is-rounded is-success" type="button" value="登録する" disabled>
             </div>
         </form>
     </div>

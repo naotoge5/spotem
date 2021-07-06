@@ -1,7 +1,15 @@
+auth_code = 0;
 $(function () {
-    $("#first input[type='button']").click(function (e) {
-        $("#first").addClass("is-hidden");
-        $("#second").removeClass("is-hidden");
+    $(".next").click(function (e) {
+
+        if (e.target.id == "toSecond") {
+            $("#first").addClass("is-hidden");
+            $("#second").removeClass("is-hidden");
+        } else {
+            sendMail($("input[name='email']").val());
+            $("#second").addClass("is-hidden");
+            $("#third").removeClass("is-hidden");
+        }
     });
     $("#first").change(function (e) {
         $("input[name='" + e.target.name + "']").removeClass("is-danger is-success");
@@ -39,126 +47,103 @@ $(function () {
                     $("#email p").text("形式が正しくありません");
                 }
             } else if (e.target.name == 'password') {
-                $("#signup .password_check div input[name='password_check']").removeClass("is-danger is-success");
-                $("#signup .password_check p").text("");
-                $("#signup .password_check div .is-right i").removeClass("fa-check");
-                var password = $("#signup input[name='password']").val();
-                var password_check = $("#signup input[name='password_check']").val();
-                if (password.length != 0) {
-                    if (passwordCheck(password)) {
-                        $("#signup .password div input[name='password']").addClass("is-success");
-                        $("#signup .password div .is-right i").addClass("fa-check");
-                        passwordComparison(password, password_check);
-                    } else {
-                        $("#signup input[name='password']").addClass("is-danger");
-                        $("#signup .password p").text("形式が正しくありません");
+                $("input[name='password_check']").removeClass("is-danger is-success");
+                $("#password_check p").text("");
+                $("password_check .is-right i").removeClass("fa-check");
+                var password = $("input[name='password']").val();
+                var password_check = $("input[name='password_check']").val();
+                if (passwordCheck(password)) {
+                    $("input[name='password']").addClass("is-success");
+                    $("#password .is-right i").addClass("fa-check");
+                    if (password == password_check) {
+                        $("input[name='password_check']").addClass("is-success");
+                        $("#password_check .is-right i").addClass("fa-check");
+                        if ($("input[name='email']").hasClass("is-success")) $("#second .next").prop('disabled', false);
+                    } else if (password_check.length > 7) {
+                        $("input[name='password_check']").addClass("is-danger");
+                        $("#password_check p").text("パスワードが一致しません");
                     }
-                }
-            }
-        }
-    });/*
-    $("#signup").change(function (e) {
-        $("#signup ." + e.target.name + " div input[name='" + e.target.name + "']").removeClass("is-danger is-success");
-        $("#signup ." + e.target.name + " p").text("");
-        $("#signup ." + e.target.name + " div .is-right i").removeClass("fa-check");
-        if (e.target.value != 0) {
-            $("#signup ." + e.target.name + " div").addClass("is-loading");
-            if (e.target.name == 'userid') {
-                $("#signup .userid p").text("");
-                var userid = e.target.value;
-                if (userid.match(/[^A-Za-z0-9]+/)) {
-                    $("#signup input[name='userid']").addClass("is-danger");
-                    $("#signup .userid p").text("特殊文字は使用できません - 例：@ / < - | ;");
                 } else {
-                    find(e.target);
-                }
-            } else if (e.target.name == 'email') {
-                $("#signup .email p").text("");
-                var email = e.target.value;
-                if (email.match(/.+@.+\..+/)) {
-                    find(e.target);
-                } else {
-                    $("#signup input[name='email']").addClass("is-danger");
-                    $("#signup .email p").text("形式が正しくありません");
-                }
-            } else if (e.target.name == 'password') {
-                $("#signup .password_check div input[name='password_check']").removeClass("is-danger is-success");
-                $("#signup .password_check p").text("");
-                $("#signup .password_check div .is-right i").removeClass("fa-check");
-                var password = $("#signup input[name='password']").val();
-                var password_check = $("#signup input[name='password_check']").val();
-                if (password.length != 0) {
-                    if (passwordCheck(password)) {
-                        $("#signup .password div input[name='password']").addClass("is-success");
-                        $("#signup .password div .is-right i").addClass("fa-check");
-                        passwordComparison(password, password_check);
-                    } else {
-                        $("#signup input[name='password']").addClass("is-danger");
-                        $("#signup .password p").text("形式が正しくありません");
-                    }
+                    $("input[name='password']").addClass("is-danger");
+                    $("#password p").text("形式が正しくありません");
                 }
 
-            } else if (e.target.name == 'password_check') {
-                var password = $("#signup input[name='password']").val();
-                var password_check = $("#signup input[name='password_check']").val();
-                if ($("#signup input[name='password']").hasClass("is-success")) {
-                    passwordComparison(password, password_check);
+            } else {
+                var password = $("input[name='password']").val();
+                var password_check = $("input[name='password_check']").val();
+                if (password_check.length > 7 && $("input[name='password']").hasClass("is-success")) {
+                    if (password == password_check) {
+                        $("input[name='password_check']").addClass("is-success");
+                        $("#password_check .is-right i").addClass("fa-check");
+                        if ($("input[name='email']").hasClass("is-success")) $("#second .next").prop('disabled', false);
+                    } else if (password_check.length > 7) {
+                        $("input[name='password_check']").addClass("is-danger");
+                        $("#password_check p").text("パスワードが一致しません");
+                    }
                 }
-            } else {//name
-                $("#signup input[name='name']").addClass("is-success");
-                $("#signup .name div .is-right i").addClass("fa-check");
             }
-            $("#signup ." + e.target.name + " div").removeClass("is-loading");
+
         }
-        formCheck();
     });
-
-    $('#signup input[type="button"]').click(function () {
-        var form = $("#signup");
-        var userid = $("#signup input[name='userid']").val();
-        var name = $("#signup input[name='name']").val();
-        var email = $("#signup input[name='email']").val();
-        var password = $("#signup input[name='password']").val();
-        var password_check = $("#signup input[name='password_check']").val();
-        var emp = "";
-        for (let index = 0; index < password.length; index++) {
-            emp += "●";
+    $("#third").change(function () {
+        $("input[name='code']").removeClass("is-danger is-success");
+        $("#code p").text("");
+        $("#code .is-right i").removeClass("fa-check");
+        var code = $("input[name='code']").val();
+        if (code.length > 0) {
+            if (code == auth_code) {
+                $("input[name='code']").addClass("is-success");
+                $("#code .is-right i").addClass("fa-check");
+                $("input[name='code']").prop('disabled', true);
+                $("#last").prop('disabled', false);
+            } else {
+                $("input[name='code']").addClass("is-danger");
+                $("#code p").text("認証コードが正しくありません");
+            }
         }
-        var email = $("#signup input[name='email']").val();
-        var flag = confirm("ユーザーID：" + userid + "\nユーザー名：" + name + "\nパスワード：" + emp + "\nメール：" + email + "\n\n上記のメールに登録完了のURLを送信します。\nよろしいですか？");
-        if (flag) form.submit();
-    });*/
+    });
 
     //functions
     function find(target) {
         var unique = target.value;
-        if (unique.length != 0) {
-            $.ajax({
-                type: "GET",
-                url: "controller/aync.php",
-                data: { func: 'User::find', unique: unique }
-            }).done(function (data) {
-                // 通信成功時のコールバック処理
-                if (data) {
-                    $("#" + target.name + " input[name='" + target.name + "']").addClass("is-danger");
-                    $("#" + target.name + " p").text("既に使用されています。");
-                } else {//return 0 ユーザー使用可
-                    $("#" + target.name + " input[name='" + target.name + "']").addClass("is-success");
-                    $("#" + target.name + " .is-right i").addClass("fa-check");
-                    switch (target.name) {
-                        case 'userid':
-                            if ($("input[name='name']").hasClass("is-success")) $("#first .next").prop('disabled', false);
-                            break;
-                        case 'email':
-                            if ($("input[name='email_check']").hasClass("is-success")) $("#second .next").prop('disabled', false);
-                            break;
-                    }
+        $.ajax({
+            type: "POST",
+            url: "controller/aync.php",
+            data: { func: 'User::find', value: unique }
+        }).done(function (data) {
+            // 通信成功時のコールバック処理
+            if (data) {
+                $("#" + target.name + " input[name='" + target.name + "']").addClass("is-danger");
+                $("#" + target.name + " p").text("既に使用されています。");
+            } else {//return 0 ユーザー使用可
+                $("#" + target.name + " input[name='" + target.name + "']").addClass("is-success");
+                $("#" + target.name + " .is-right i").addClass("fa-check");
+                switch (target.name) {
+                    case 'userid':
+                        if ($("input[name='name']").hasClass("is-success")) $("#first .next").prop('disabled', false);
+                        break;
+                    case 'email':
+                        if ($("input[name='password_check']").hasClass("is-success")) $("#second .next").prop('disabled', false);
+                        break;
                 }
-            }).fail(function (data) {
-                // 通信失敗時のコールバック処理
-                alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
-            });
-        }
+            }
+        }).fail(function (data) {
+            // 通信失敗時のコールバック処理
+            alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
+        });
+    }
+    function sendMail(email) {
+        $.ajax({
+            type: "POST",
+            url: "controller/aync.php",
+            data: { func: 'sendForAuth', value: email }
+        }).done(function (data) {
+            // 通信成功時のコールバック処理
+            auth_code = data;
+        }).fail(function (data) {
+            // 通信失敗時のコールバック処理
+            alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
+        });
     }
 
     function passwordCheck(password) {
@@ -166,23 +151,6 @@ $(function () {
             return true;
         } else {
             return false;
-        }
-    }
-    function passwordComparison(password, password_check) {
-        if (password == password_check) {
-            $("#signup input[name='password_check']").addClass("is-success");
-            $("#signup .password_check div .is-right i").addClass("fa-check");
-        } else if (password_check.length != 0) {
-            $("#signup input[name='password_check']").addClass("is-danger");
-            $("#signup .password_check p").text("パスワードが一致しません");
-        }
-    }
-
-    function formCheck() {
-        if ($("#signup input[name='userid']").hasClass("is-success") && $("#signup input[name='name']").hasClass("is-success") && $("#signup input[name='email']").hasClass("is-success") && $("#signup input[name='password']").hasClass("is-success") && $("#signup input[name='password_check']").hasClass("is-success")) {
-            $("#signup .button").prop('disabled', false);
-        } else {
-            $("#signup .button").prop('disabled', true);
         }
     }
 });
