@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/public/bulma.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
-    <link rel="stylesheet" href="assets/public/signup.css">
+    <link rel="stylesheet" href="assets/public/auth.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="assets/public/signup.js" defer></script>
-    <title>新規登録</title>
+    <title>新規登録 / Spotem</title>
 </head>
 
-<body>
+<body class="has-background-black">
     <div class="_is-centered">
         <h1 class="is-size-4 has-text-weight-bold has-text-success mb-6">アカウントを作成</h1>
         <form action="controller/auth.php" method="post">
@@ -57,10 +57,13 @@
                     <p class="help is-danger"></p>
                 </div>
                 <div id="password" class="field mb-5">
-                    <div class="control has-icons-left">
+                    <div class="control has-icons-left has-icons-right">
                         <input class="input is-medium is-rounded" type="password" name="password" oncopy="return false" placeholder="パスワード（8文字以上の半角英数）">
                         <span class="icon is-small is-left">
                             <i class="fas fa-lock"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas"></i>
                         </span>
                     </div>
                     <p class="help is-danger"></p>

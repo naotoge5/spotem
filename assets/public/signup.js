@@ -1,5 +1,8 @@
 auth_code = 0;
 $(function () {
+    $("#last").click(function(){
+        $("form").submit();
+    });
     $(".next").click(function (e) {
 
         if (e.target.id == "toSecond") {
@@ -21,7 +24,7 @@ $(function () {
                 var userid = $("input[name='userid']").val();
                 if (userid.match(/[^A-Za-z0-9]+/)) {
                     $("input[name='userid']").addClass("is-danger");
-                    $("#userid p").text("特殊文字は使用できません - 例：@ / < - | ;");
+                    $("#userid p").text("特殊文字不可");
                 } else {
                     find(e.target);
                 }

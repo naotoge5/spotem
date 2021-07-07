@@ -12,22 +12,15 @@ class Config
             }
         }
     }
-
     /**
      * Undocumented function
      *
-     * @param string $url
-     * @return string|false
+     * @param bool $type true is information, false is error
+     * @param string $message
+     * @return string html notification
      */
-    static function getUnique(string $url)
+    static function alert(bool $type, string $message): string
     {
-        $result = false;
-        $box = parse_url($url, PHP_URL_QUERY);
-        parse_str($box, $arr);
-        try {
-            $result = $arr['unique'];
-        } catch (Exception $e) {
-        }
-        return $result;
+        return $type ? '<div class="notification is-success is-light"><button class="delete"></button>' . $message . '</div>' : '<div class="notification is-danger is-light"><button class="delete"></button>' . $message . '</div>';
     }
 }

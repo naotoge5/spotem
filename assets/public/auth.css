@@ -1,10 +1,6 @@
-html, body, ._is-centered {
+html, body {
     height: 100%;
     overflow: hidden;
-}
-
-body {
-    background-color: black;
 }
 
 input:not(input[type="button"]) {
@@ -13,6 +9,7 @@ input:not(input[type="button"]) {
 
 input::placeholder {
     color: gray!important;
+    font-size: 10px;
 }
 
 input:not(input[type="button"]) {
@@ -21,12 +18,12 @@ input:not(input[type="button"]) {
 }
 
 ._is-centered {
-    margin: 30% 36px;
+    margin: 24vh 30px;
 }
 
 @media screen and (min-width: 769px) {
     ._is-centered {
-        margin: 10% auto;
-        width: 600px;
+        margin: 24vh auto;
+        width: 696px;
     }
 }
