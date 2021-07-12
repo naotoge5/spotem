@@ -9,7 +9,7 @@ $(function () {
             $("#first").addClass("is-hidden");
             $("#second").removeClass("is-hidden");
         } else {
-            sendMail($("input[name='email']").val());
+            sendAuthCode($("input[name='email']").val());
             $("#second").addClass("is-hidden");
             $("#third").removeClass("is-hidden");
         }
@@ -135,11 +135,11 @@ $(function () {
             alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
         });
     }
-    function sendMail(email) {
+    function sendAuthCode(email) {
         $.ajax({
             type: "POST",
             url: "controller/aync.php",
-            data: { func: 'sendForAuth', value: email }
+            data: { func: 'sendAuthCode', value: email }
         }).done(function (data) {
             // 通信成功時のコールバック処理
             auth_code = data;
