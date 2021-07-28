@@ -12,7 +12,7 @@ function sendAuthCode($value)
     for ($i = 0; $i < 6; $i++) {
         $code .= mt_rand(0, 9);
     }
-    $mail->sendMail("認証コードのご案内", "認証コード：" . $code);
+    $mail->send("認証コードのご案内", "認証コード：" . $code);
 
     return $code;
 }

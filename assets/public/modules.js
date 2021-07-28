@@ -64,7 +64,7 @@ export const Mail = {
 
 export const Alert = {
     /**
-     * @return {any} Deferredオブジェクト in data - 認証コード（6ケタ）
+     * @return {any} Deferredオブジェクト in data - メッセージ
      */
     get: function () {
         var deferred = new $.Deferred();

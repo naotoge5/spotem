@@ -1,10 +1,6 @@
-var window_height = window.innerHeight;
-var container_height = $(".container").innerHeight();
-var margin_top = ((window_height - container_height) / 2) * 0.8;
-$(".container").css('margin-top', margin_top);
-
 import { Mail, User } from './modules.js';
 
+// 認証コード
 let Code = 0;
 
 let Password = {
@@ -44,7 +40,7 @@ const Form = {
 $(function () {
     $("._next").click(function () {
         if (!$("#__one").hasClass("is-hidden")) {
-            $("#__one, #__two, ._back").toggleClass("is-hidden");
+            $("#__one, #__two").toggleClass("is-hidden");
         } else if (!$("#__two").hasClass("is-hidden")) {
             $("#__two, #__three").toggleClass("is-hidden");
             var deferred = Mail.sendAuthCode($("input[name='email']").val());
@@ -57,8 +53,10 @@ $(function () {
     });
 
     $("._back").click(function () {
-        if (!$("#__two").hasClass("is-hidden")) {
-            $("#__one, #__two, ._back").toggleClass("is-hidden");
+        if (!$("#__one").hasClass("is-hidden")) {
+            window.location.href = '/';
+        } else if (!$("#__two").hasClass("is-hidden")) {
+            $("#__one, #__two").toggleClass("is-hidden");
         } else {
             Form.reset('code');
             $("input[name='code']").val("");
@@ -118,7 +116,7 @@ $(function () {
                                 Form.error(name, '既に使用されています。');
                             } else {
                                 Form.success(name, true);
-                                if ($("input[name='password'], input[name='password_check']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
+                                if ($("input[name='password'], input[name='password_check']").hasClass("is-success")) $("#__two ._next").prop('disabled', false);
                             }
                         });
                     } else {

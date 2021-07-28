@@ -25,3 +25,13 @@ input:not(input[type="button"]) {
 ._back:hover {
     cursor: pointer;
 }
+
+._content {
+    position: absolute;
+    width: 100%;
+    max-width: 960px;
+    min-height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
