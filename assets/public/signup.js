@@ -1,11 +1,51 @@
-auth_code = 0;
+import { Mail, User } from './modules.js';
+
+let Code = 0;
+
+let Password = {
+    first: '',
+    second: ''
+}
+
+const Form = {
+    /**
+     * 使用可能時のフォームの装飾
+     * @param {string} tag_name 対象のid or class名
+     */
+    success: function (tag_name) {
+        $("input[name='" + tag_name + "']").addClass("is-success");
+        $("#" + tag_name + " .is-right i").addClass("fa-check");
+    },
+    /**
+     * 使用不可時のフォームの装飾
+     * @param {string} tag_name 対象のid or class名
+     * @param {string} message エラーメッセージ
+     */
+    error: function (tag_name, message) {
+        $("input[name='" + tag_name + "']").addClass("is-danger");
+        $("#" + tag_name + " .is-danger").text(message);
+    },
+    /**
+     * フォームの装飾を削除
+     * @param {string} tag_name 対象のid or class名
+     */
+    reset: function (tag_name) {
+        $("input[name='" + tag_name + "']").removeClass("is-danger is-success");
+        $("#" + tag_name + " .is-danger").text("");
+        $("#" + tag_name + " .is-right i").removeClass("fa-check");
+    }
+}
+
 $(function () {
     $("._next").click(function () {
         if (!$("#__one").hasClass("is-hidden")) {
             $("#__one, #__two, ._back").toggleClass("is-hidden");
         } else if (!$("#__two").hasClass("is-hidden")) {
-            sendAuthCode($("input[name='email']").val());
             $("#__two, #__three").toggleClass("is-hidden");
+            var deferred = Mail.sendAuthCode($("input[name='email']").val());
+            deferred.done(function (data) {
+                Code = data;
+            });
         } else {
             $("form").submit();
         }
@@ -15,11 +55,9 @@ $(function () {
         if (!$("#__two").hasClass("is-hidden")) {
             $("#__one, #__two, ._back").toggleClass("is-hidden");
         } else {
+            Form.reset('code');
             $("input[name='code']").val("");
-            $("#code .is-danger").text("");
             $("#__three ._next").prop('disabled', true);
-            $("#code .is-right i, input[name='code']").removeClass("is-danger is-success");
-            $("input[name='code']").removeClass("fa-check");
             $("#__two, #__three").toggleClass("is-hidden");
         }
     });
@@ -32,148 +70,90 @@ $(function () {
         $("._back").toggleClass("has-text-success has-text-success-dark");
     }
     );
-
     $("#__one").change(function (e) {
-        $("input[name='" + e.target.name + "']").removeClass("is-danger is-success");
-        $("#" + e.target.name + " .is-danger").text("");
-        $("#" + e.target.name + " .is-right i").removeClass("fa-check");
+        var name = e.target.name;
+        var value = e.target.value;
+        Form.reset(name);
         $("#__one ._next").prop('disabled', true);
-        if (e.target.value != 0) {
-            if (e.target.name == 'userid') {
-                var userid = $("input[name='userid']").val();
-                if (userid.match(/[^A-Za-z0-9]+/)) {
-                    $("input[name='userid']").addClass("is-danger");
-                    $("#userid .is-danger").text("特殊文字不可");
-                } else {
-                    find(e.target);
-                }
+        if (value == 0) return;
+        if (name == 'userid') {
+            if (value.match(/[^A-Za-z0-9]+/)) {
+                $("input[name='userid']").addClass("is-danger");
+                $("#userid .is-danger").text("特殊文字不可");
             } else {
-                $("input[name='name']").addClass("is-success");
-                $("#name .is-right i").addClass("fa-check");
-                if ($("input[name='userid']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
+                var deferred = User.find(value);
+                //Deferredオブジェクトを監視し、完了の通知がきたらdone内を実行
+                deferred.done(function (data) {
+                    if (data) {
+                        Form.error(name, '既に使用されています。');
+                    } else {
+                        Form.success(name);
+                        if ($("input[name='name']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
+                    }
+                });
             }
+        } else {
+            Form.success(name);
+            if ($("input[name='userid']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
         }
     });
-    
+
     $("#__two").change(function (e) {
-        $("input[name='" + e.target.name + "']").removeClass("is-danger is-success");
-        $("#" + e.target.name + " .is-danger").text("");
-        $("#" + e.target.name + " .is-right i").removeClass("fa-check");
+        var name = e.target.name;
+        var value = e.target.value;
+        Form.reset(name);
         $("#__two ._next").prop('disabled', true);
-        if (e.target.value != 0) {
-            if (e.target.name == 'email') {
-                var email = $("input[name='email']").val();
-                if (email.match(/.+@.+\..+/)) {
-                    find(e.target);
-                } else {
-                    $("input[name='email']").addClass("is-danger");
-                    $("#email .is-danger").text("形式が正しくありません");
-                }
-            } else if (e.target.name == 'password') {
-                $("input[name='password_check']").removeClass("is-danger is-success");
-                $("#password_check .is-danger").text("");
-                $("password_check .is-right i").removeClass("fa-check");
-                var password = $("input[name='password']").val();
-                var password_check = $("input[name='password_check']").val();
-                if (passwordCheck(password)) {
-                    $("input[name='password']").addClass("is-success");
-                    $("#password .is-right i").addClass("fa-check");
-                    if (password == password_check) {
-                        $("input[name='password_check']").addClass("is-success");
-                        $("#password_check .is-right i").addClass("fa-check");
-                        if ($("input[name='email']").hasClass("is-success")) $("#__two ._next").prop('disabled', false);
-                    } else if (password_check.length > 7) {
-                        $("input[name='password_check']").addClass("is-danger");
-                        $("#password_check .is-danger").text("パスワードが一致しません");
+        if (value != 0) {
+            switch (name) {
+                case 'email':
+                    if (Mail.check(value)) {
+                        var deferred = User.find(value);
+                        deferred.done(function (data) {
+                            if (data) {
+                                Form.error(name, '既に使用されています。');
+                            } else {
+                                Form.success(name, true);
+                                if ($("input[name='password'], input[name='password_check']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
+                            }
+                        });
+                    } else {
+                        Form.error(name, '形式が正しくありません。');
                     }
-                } else {
-                    $("input[name='password']").addClass("is-danger");
-                    $("#password .is-danger").text("形式が正しくありません");
-                }
-
-            } else {
-                var password = $("input[name='password']").val();
-                var password_check = $("input[name='password_check']").val();
-                if (password_check.length > 7 && $("input[name='password']").hasClass("is-success")) {
-                    if (password == password_check) {
-                        $("input[name='password_check']").addClass("is-success");
-                        $("#password_check .is-right i").addClass("fa-check");
-                        if ($("input[name='email']").hasClass("is-success")) $("#__two ._next").prop('disabled', false);
-                    } else if (password_check.length > 7) {
-                        $("input[name='password_check']").addClass("is-danger");
-                        $("#password_check .is-danger").text("パスワードが一致しません");
+                    break;
+                case 'password':
+                    Form.reset('password_check');
+                    Password.first = value;
+                    if (User.checkPassword(Password.first)) {
+                        Form.success(name);
+                    } else {
+                        $("input[name='password']").addClass("is-danger");
+                        $("#password .is-danger").text("形式が正しくありません");
                     }
-                }
+                case 'password_check':
+                    Password.second = $("input[name='password_check']").val();
+                    if ($("input[name='password']").hasClass("is-success") && Password.second != 0) {
+                        if (Password.first == Password.second) {
+                            Form.success('password_check');
+                            if ($("input[name='email']").hasClass("is-success")) $("#__two ._next").prop('disabled', false);
+                        } else {
+                            Form.error('password_check', 'パスワードが一致しません');
+                        }
+                    }
+                    break;
             }
-
         }
     });
     $("#__three").change(function () {
-        $("input[name='code']").removeClass("is-danger is-success");
-        $("#code .is-danger").text("");
-        $("#code .is-right i").removeClass("fa-check");
+        Form.reset('code');
         $("#__three ._next").prop('disabled', true);
         var code = $("input[name='code']").val();
         if (code.length > 0) {
-            if (code == auth_code) {
-                $("input[name='code']").addClass("is-success");
-                $("#code .is-right i").addClass("fa-check");
+            if (code == Code) {
+                Form.success('code');
                 $("#__three ._next").prop('disabled', false);
             } else {
-                $("input[name='code']").addClass("is-danger");
-                $("#code .is-danger").text("認証コードが正しくありません");
+                Form.error('code', '認証コードが正しくありません');
             }
         }
     });
-
-    //functions
-    function find(target) {
-        var unique = target.value;
-        $.ajax({
-            type: "POST",
-            url: "controller/aync.php",
-            data: { func: 'User::find', value: unique }
-        }).done(function (data) {
-            // 通信成功時のコールバック処理
-            if (data) {
-                $("#" + target.name + " input[name='" + target.name + "']").addClass("is-danger");
-                $("#" + target.name + " .is-danger").text("既に使用されています。");
-            } else {//return 0 ユーザー使用可
-                $("#" + target.name + " input[name='" + target.name + "']").addClass("is-success");
-                $("#" + target.name + " .is-right i").addClass("fa-check");
-                switch (target.name) {
-                    case 'userid':
-                        if ($("input[name='name']").hasClass("is-success")) $("#__one ._next").prop('disabled', false);
-                        break;
-                    case 'email':
-                        if ($("input[name='password_check']").hasClass("is-success")) $("#__two ._next").prop('disabled', false);
-                        break;
-                }
-            }
-        }).fail(function (data) {
-            // 通信失敗時のコールバック処理
-            alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
-        });
-    }
-    function sendAuthCode(email) {
-        $.ajax({
-            type: "POST",
-            url: "controller/aync.php",
-            data: { func: 'sendAuthCode', value: email }
-        }).done(function (data) {
-            // 通信成功時のコールバック処理
-            auth_code = data;
-        }).fail(function (data) {
-            // 通信失敗時のコールバック処理
-            alert("申し訳ございません。エラーが発生しました。\n時間を空けてもう一度お試しください。");
-        });
-    }
-
-    function passwordCheck(password) {
-        if (password.length > 7 && password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 });

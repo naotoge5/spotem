@@ -13,6 +13,7 @@ function sendAuthCode($value)
         $code .= mt_rand(0, 9);
     }
     $mail->sendMail("認証コードのご案内", "認証コード：" . $code);
+
     return $code;
 }
 
@@ -21,4 +22,14 @@ function getUserParam($userid)
     $user = User::get($userid);
     $userparams = ["userid" => $user->getUserId(), "name" => $user->getName()];
     return json_encode($userparams);
+}
+
+function getAlert($val)
+{
+    $alert = 0;
+    if (isset($_SESSION['alert'])) {
+        $alert = $_SESSION['alert'];
+        unset($_SESSION['alert']);
+    }
+    return json_encode($alert);
 }

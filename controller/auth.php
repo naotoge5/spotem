@@ -9,11 +9,12 @@ if (strpos($request_url, 'login')) {
     if (User::authSecure($unique, $password)) {
         $user = User::get($unique);
         $_SESSION['userid'] = $user->getUserId();
-        $_SESSION['alert'] = Config::alert(true, 'ログインしました');
+        $_SESSION['alert'] = 'ログインしました';
         header('Location: ../home.php');
     } else {
-        $_SESSION['alert'] = Config::alert(false, 'ユーザーID、メールまたはパスワードが違います');
-        header('Location: ../login.php?unique=' . $unique);
+        //$_SESSION['alert'] = Config::alert(false, 'ユーザーID、メールまたはパスワードが違います');
+        $_SESSION['alert'] = 'ユーザーID、メールまたはパスワードが違います';
+        header('Location: ../login.html?unique=' . $unique);
     }
 } else {
     $userid = $_POST['userid'];
@@ -23,9 +24,9 @@ if (strpos($request_url, 'login')) {
     $user = new User($userid, $name, $email);
     if ($user->register($password)) {
         $_SESSION['userid'] = $user->getUserId();
-        $_SESSION['alert'] = Config::alert(true, '登録が完了しました');
+        $_SESSION['alert'] = '登録が完了しました';
         header('Location: ../home.php');
     } else {
-        $_SESSION['alert'] = Config::alert(false,'登録に失敗しました。再度おねがします');
+        $_SESSION['alert'] = '登録に失敗しました。再度おねがします';
     }
 }
