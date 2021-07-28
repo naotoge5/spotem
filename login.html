@@ -1,6 +1,5 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="has-background-black">
 
 <head>
     <meta charset="UTF-8">
@@ -11,36 +10,32 @@
     <link rel="stylesheet" href="assets/public/auth.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="assets/public/login.js" type="module" defer></script>
-    <title>Document</title>
+    <title>ログイン / Spotem</title>
 </head>
 
 <body>
-    <div class="hero is-fullheight has-background-black">
-        <div class="hero-body">
-            <div class="container is-max-desktop">
-                <p class="is-size-4 has-text-weight-bold has-text-white mb-6 has-text-centered">Spotemにログイン</p>
-                <p class="help is-warning has-text-centered mb-5"></p>
-                <form action="controller/auth.php" method="post">
-                    <div class="field mb-5">
-                        <div class="control has-icons-left">
-                            <input class="input is-medium is-rounded" type="text" name="unique" placeholder="ユーザーIDまたはメール" required>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-at"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field mb-5">
-                        <div class="control has-icons-left">
-                            <input class="input is-medium is-rounded" type="password" name="password" placeholder="パスワード（8文字以上の半角英数）" required>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <button class="input button is-rounded is-success" type="submit">ログイン</button>
-                </form>
+    <div class="px-4 container is-max-desktop">
+        <p class="is-size-4 has-text-weight-bold has-text-white mb-6 has-text-centered">Spotemにログイン</p>
+        <p class="help is-warning has-text-centered mb-5"></p>
+        <form action="controller/auth.php" method="post">
+            <div class="field mb-5">
+                <div class="control has-icons-left">
+                    <input class="input is-medium is-rounded" type="text" name="unique" placeholder="ユーザーIDまたはメール" required>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-at"></i>
+                    </span>
+                </div>
             </div>
-        </div>
+            <div class="field mb-5">
+                <div class="control has-icons-left">
+                    <input class="input is-medium is-rounded" type="password" name="password" placeholder="パスワード（8文字以上の半角英数）" required>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </div>
+            </div>
+            <button class="input button is-rounded is-success" type="submit">ログイン</button>
+        </form>
     </div>
 </body>
 

@@ -218,7 +218,9 @@ class User
             $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
             $row = $result->fetchArray(SQLITE3_ASSOC);
-            if (password_verify($password, $row['password'])) $flag = true;
+            if ($row) {
+                if (password_verify($password, $row['password'])) $flag = true;
+            }
         } catch (Exception $e) {
         } finally {
             $db->close();

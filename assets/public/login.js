@@ -1,4 +1,10 @@
+var window_height = window.innerHeight;
+var container_height = $(".container").innerHeight();
+var margin_top = ((window_height - container_height) / 2) * 0.8;
+
 import { Alert } from './modules.js';
+
+$(".container").css('margin-top', margin_top);
 
 var deferred = Alert.get();
 deferred.done(function (data) {

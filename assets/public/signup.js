@@ -1,3 +1,8 @@
+var window_height = window.innerHeight;
+var container_height = $(".container").innerHeight();
+var margin_top = ((window_height - container_height) / 2) * 0.8;
+$(".container").css('margin-top', margin_top);
+
 import { Mail, User } from './modules.js';
 
 let Code = 0;

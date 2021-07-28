@@ -10,7 +10,7 @@ if (strpos($request_url, 'login')) {
         $user = User::get($unique);
         $_SESSION['userid'] = $user->getUserId();
         $_SESSION['alert'] = 'ログインしました';
-        header('Location: ../home.php');
+        header('Location: ../home.html');
     } else {
         //$_SESSION['alert'] = Config::alert(false, 'ユーザーID、メールまたはパスワードが違います');
         $_SESSION['alert'] = 'ユーザーID、メールまたはパスワードが違います';
@@ -25,7 +25,7 @@ if (strpos($request_url, 'login')) {
     if ($user->register($password)) {
         $_SESSION['userid'] = $user->getUserId();
         $_SESSION['alert'] = '登録が完了しました';
-        header('Location: ../home.php');
+        header('Location: ../home.html');
     } else {
         $_SESSION['alert'] = '登録に失敗しました。再度おねがします';
     }
