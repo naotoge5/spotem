@@ -18,9 +18,9 @@ class Post
         }
         $query = "SELECT * FROM posts";
         if (is_null($count)) {
-            $query .= " WHERE _userid IN (" . $userids_str . ") ORDER BY time LIMIT 20";
+            $query .= " WHERE userid IN (" . $userids_str . ") ORDER BY time LIMIT 20";
         } else {
-            $query .= " WHERE _userid IN (" . $userids_str . ") ORDER BY time LIMIT 20 OFFSET " . $count * 20;
+            $query .= " WHERE userid IN (" . $userids_str . ") ORDER BY time LIMIT 20 OFFSET " . $count * 20;
         }
         $columns = NULL;
 
