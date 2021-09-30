@@ -1,5 +1,4 @@
-model/PHPMailer-6.5.0
-model/Mail.php
-assets/db
-.vscode/sftp.json
+db
+vendor
 .htaccess
+.env

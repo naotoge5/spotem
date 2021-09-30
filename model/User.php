@@ -157,7 +157,7 @@ class User
     static function get($unique)
     {
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT * FROM users WHERE userid = :key OR email = :key");
             $stmt->bindParam(':key', $unique);
@@ -187,7 +187,7 @@ class User
     static function auth(string $usreid, string $password)
     {
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE userid = :userid AND password = :password");
             $stmt->bindParam(':userid', $usreid);
@@ -212,7 +212,7 @@ class User
     {
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT password FROM users WHERE userid = :key OR email = :key");
             $stmt->bindParam(':key', $unique);
