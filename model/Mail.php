@@ -1,5 +1,7 @@
 <?php
-require './vendor/autoload.php';
+require '../vendor/autoload.php';
+
+use Dotenv\Dotenv;
 
 // PHPMailer のソースファイルの読み込み
 require_once 'PHPMailer-6.5.0/src/Exception.php';
@@ -16,8 +18,10 @@ class Mail
     private $email;
     function __construct(string $email)
     {
-        Dotenv\Dotenv::createImmutable(__DIR__)->load();
         $this->email = $email;
+
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__, 1));
+        $dotenv->load();
     }
     /**
      * メール送信
@@ -28,18 +32,18 @@ class Mail
      */
     function send(string $title, string $body)
     {
-        try {
+        try {      
             $mailer = new PHPMailer(true);
             $mailer->CharSet = 'utf-8';
             $mailer->isSMTP();
             $mailer->Host = $_ENV['MAIL_HOST'];
             $mailer->SMTPAuth = true;
-            $mailer->Username = $_ENV['MAIL_USER'];
+            $mailuser = $_ENV['MAIL_USER'];
+            $mailer->Username = $mailuser;
             $mailer->Password = $_ENV['MAIL_PASSWORD'];
             $mailer->SMTPSecure = 'ssl';
             $mailer->Port = 465;
-
-            $mailer->setFrom($mailer->Username, 'Spotem'); //送信者
+            $mailer->setFrom($mailuser, 'Spotem'); //送信者
             $mailer->addAddress($this->email); //宛先
 
             $mailer->Subject = $title;

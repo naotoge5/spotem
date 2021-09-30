@@ -8,11 +8,12 @@ echo $func($value); //可変関数
 function sendAuthCode($value)
 {
     $mail = new Mail($value);
+    //コードの生成
     $code = "";
     for ($i = 0; $i < 6; $i++) {
         $code .= mt_rand(0, 9);
     }
-    $mail->send("認証コードのご案内", "認証コード：" . $code);
+    $mail->send("認証コードのご案内", "認証コード：" . $code . "\n\nこの番号を認証コード入力画面で入力してください。");
 
     return $code;
 }

@@ -77,7 +77,7 @@ class User
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("INSERT INTO users VALUES(:userid, :name, :email, :password, :comment, :image, :is_official)");
             $stmt->bindParam(':userid', $this->userid);
@@ -110,7 +110,7 @@ class User
     {
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db');
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :key OR email = :key");
             $stmt->bindParam(':key', $unique);
@@ -134,7 +134,7 @@ class User
     {
         $rows = [];
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db');
             $result = $db->query("SELECT * FROM users");
             while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                 $rows[] = $row;
