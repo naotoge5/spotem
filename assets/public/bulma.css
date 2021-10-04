@@ -2160,7 +2160,10 @@ div.icon-text {
 .notification {
   background-color: whitesmoke;
   border-radius: 4px;
-  position: relative;
+  /*position: relative;*/
+  position: fixed;
+  top: 0;
+  width: 100%;
   padding: 1.25rem 2.5rem 1.25rem 1.5rem;
 }
 

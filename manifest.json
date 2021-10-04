@@ -2,7 +2,7 @@
     "name": "spotem",
     "short_name": "spotem",
     "description": "spotem",
-    "start_url": "home.php",
+    "start_url": "home.html",
     "display": "standalone",
     "icons": [
         {

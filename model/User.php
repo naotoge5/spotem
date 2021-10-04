@@ -77,7 +77,7 @@ class User
         $hash_password = password_hash($password, PASSWORD_DEFAULT);
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("INSERT INTO users VALUES(:userid, :name, :email, :password, :comment, :image, :is_official)");
             $stmt->bindParam(':userid', $this->userid);
@@ -103,17 +103,17 @@ class User
     /**
      * Undocumented function
      *
-     * @param string $userid userid
+     * @param string $unique userid or email
      * @return bool 既存のユーザIDであれば1(true)そうでなければ0(false)
      */
-    static function find(string $userid): bool
+    static function find(string $unique): bool
     {
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db');
             $db->enableExceptions(true);
-            $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :userid");
-            $stmt->bindParam(':userid', $userid);
+            $stmt = $db->prepare("SELECT COUNT(userid) FROM users WHERE userid = :key OR email = :key");
+            $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
             $row = $result->fetchArray(SQLITE3_ASSOC);
             if ($row['COUNT(userid)']) $flag = true;
@@ -134,7 +134,7 @@ class User
     {
         $rows = [];
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db');
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db');
             $result = $db->query("SELECT * FROM users");
             while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                 $rows[] = $row;
@@ -157,7 +157,7 @@ class User
     static function get($unique)
     {
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT * FROM users WHERE userid = :key OR email = :key");
             $stmt->bindParam(':key', $unique);
@@ -187,7 +187,7 @@ class User
     static function auth(string $usreid, string $password)
     {
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE userid = :userid AND password = :password");
             $stmt->bindParam(':userid', $usreid);
@@ -212,13 +212,15 @@ class User
     {
         $flag = false;
         try {
-            $db = new SQLite3(__DIR__ . '/../assets/db/spotem.db'); //相対パスでええのか
+            $db = new SQLite3(__DIR__ . '/../db/spotem.db'); //相対パスでええのか
             $db->enableExceptions(true);
             $stmt = $db->prepare("SELECT password FROM users WHERE userid = :key OR email = :key");
             $stmt->bindParam(':key', $unique);
             $result = $stmt->execute();
             $row = $result->fetchArray(SQLITE3_ASSOC);
-            if (password_verify($password, $row['password'])) $flag = true;
+            if ($row) {
+                if (password_verify($password, $row['password'])) $flag = true;
+            }
         } catch (Exception $e) {
         } finally {
             $db->close();

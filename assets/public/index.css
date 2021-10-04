@@ -3,41 +3,7 @@
   /*font-family: 'Academy Engraved LET', sans-serif;*/
 }
 
-#top .hero-body {
+section {
   background-image: url("../img/background.png");
   background-size: cover;
-}
-
-#top .title {
-  font-size: 6em;
-}
-
-#top .subtitle {
-  font-size: 2em;
-}
-
-#top .footer {
-  background-color: #fafafa;
-  padding: 1rem;
-}
-
-@media screen and (max-width: 768px) {
-  #top .title {
-    font-size: 4em;
-  }
-  #top .subtitle {
-    font-size: 1.5em;
-  }
-  .modal-content, .modal-card {
-    width: 90%;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  #top .title {
-    font-size: 3em;
-  }
-  #top .subtitle {
-    font-size: 1.5em;
-  }
 }
